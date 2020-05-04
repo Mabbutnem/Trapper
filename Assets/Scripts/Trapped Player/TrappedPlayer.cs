@@ -23,8 +23,7 @@ public class TrappedPlayer : MonoBehaviour
    [Header("Dash")]
    public float dashSpeed = 1000f;
    public float dashDur = 0.2f;
-   public float dashReload = 10f;
-   public float destroyingTime = 3f;
+   public float dashReload = 5f;
    public bool CanDash { get; private set; } = true;
    private Color dashColor = Color.white;
 
@@ -32,8 +31,8 @@ public class TrappedPlayer : MonoBehaviour
    public float deathDur = 3f;
    public float respawnDur = 1.5f;
    public float blinkFreq = 0.1f;
-   public bool CanDie { get; private set; } =  true;
-   public bool CollidedDanger { get; set; } = false;
+   public bool CanDie { get; set; } =  true;
+   public bool MustDie { get; set; } = false;
    private Transform respawn;
 
    [Header("Check")]
@@ -137,16 +136,6 @@ public class TrappedPlayer : MonoBehaviour
    {
       Renderer.material.color = dashColor;
    }
-
-   public void MakeDangerHarmless(GameObject gameObject)
-   {
-      if (gameObject.CompareTag("Danger"))
-      {
-         gameObject.tag = "Untagged";
-         gameObject.GetComponent<Renderer>().material.color = dashColor;
-         Destroy(gameObject, destroyingTime);
-      }
-   }
    #endregion
 
    #region Death
@@ -157,9 +146,10 @@ public class TrappedPlayer : MonoBehaviour
 
    private IEnumerator RespawnRoutine()
    {
+      MustDie = false;
       transform.position = respawn.position;
       transform.rotation = Quaternion.Euler(Vector3.zero);
-      CanDie = true;
+      CanDie = false;
       IEnumerator blinkinRoutine = BlinkingRoutine();
       StartCoroutine(blinkinRoutine);
       yield return new WaitForSeconds(respawnDur);
@@ -181,12 +171,7 @@ public class TrappedPlayer : MonoBehaviour
    #region Check
    private void OnCollisionEnter(Collision collision)
    {
-      if (collision.gameObject.CompareTag("Danger") && CanDie) { CollidedDanger = true; }
-   }
-
-   private void OnCollisionExit(Collision collision)
-   {
-      if (collision.gameObject.CompareTag("Danger")) { CollidedDanger = false; }
+      if (collision.gameObject.CompareTag(Danger.DANGER_TAG) && CanDie) { MustDie = true; }
    }
 
    private bool CollisionCheck(Vector3 position, Vector3 boxChecker)

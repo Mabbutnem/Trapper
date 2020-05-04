@@ -1,26 +1,28 @@
 ﻿using UnityEngine;
 
-public class RightWallState : ATrappedPlayerState
+public class LeftWallState : ATrappedPlayerState
 {
+   private static readonly float jumpModificator = Mathf.Sqrt(2);
+
    private float horizontal = 0f;
    private bool jump = false;
    private bool dash = false;
 
-   public RightWallState(TrappedPlayer trappedPlayer) : base(trappedPlayer) { }
+   public LeftWallState(TrappedPlayer trappedPlayer) : base(trappedPlayer) { }
 
    public override ATrappedPlayerState GetNextState()
    {
-      if (trappedPlayer.CollidedDanger)
+      if (trappedPlayer.MustDie)
       {
          return new DeathState(trappedPlayer);
       }
 
       if (dash)
       {
-         return new DashState(trappedPlayer, -1f);
+         return new DashState(trappedPlayer, 1f);
       }
 
-      if (trappedPlayer.RightCheck())
+      if (trappedPlayer.LeftCheck())
       {
          return this;
       }
@@ -33,7 +35,7 @@ public class RightWallState : ATrappedPlayerState
       if (Input.GetButtonDown(InputNames.JUMP)) { jump = true; }
       if (Input.GetButtonDown(InputNames.DASH) && trappedPlayer.CanDash) { dash = true; }
 
-      horizontal = Mathf.Min(0f, Input.GetAxisRaw(InputNames.TRAPPED_HORIZONTAL));
+      horizontal = Mathf.Max(0f, Input.GetAxisRaw(InputNames.TRAPPED_HORIZONTAL));
    }
 
    public override void FixedUpdate()
@@ -42,8 +44,7 @@ public class RightWallState : ATrappedPlayerState
       trappedPlayer.MoveHorizontal(horizontal);
       if (jump)
       {
-         float jumpModificator = Mathf.Sqrt(2);
-         trappedPlayer.Rigidbody.AddForce(new Vector3(-jumpModificator * trappedPlayer.jumpForce, 0f, 0f));
+         trappedPlayer.Rigidbody.AddForce(new Vector3(jumpModificator * trappedPlayer.jumpForce, 0f, 0f));
          trappedPlayer.Jump(jumpModificator);
          jump = false;
       }

@@ -33,18 +33,32 @@ public class DashState : ATrappedPlayerState
 
    public override void OnEnterState()
    {
+      trappedPlayer.CanDie = false;
       trappedPlayer.SetDashColor();
       trappedPlayer.ReloadDash();
    }
 
    public override void OnExitState()
    {
+      trappedPlayer.CanDie = true;
       trappedPlayer.ResetColor();
       trappedPlayer.Rigidbody.velocity = Vector3.zero; //After a Dash, stops quickly.
    }
 
    public override void OnCollisionEnter(Collision collision)
    {
-      trappedPlayer.MakeDangerHarmless(collision.gameObject);
+      if (collision.gameObject.CompareTag(Danger.DANGER_TAG))
+      {
+         Danger danger = collision.gameObject.GetComponent<Danger>();
+         if (danger)
+         {
+            danger.MakeHarmless(true);
+         }
+         else
+         {
+            Debug.LogError("Dangerous object without Danger script ?!");
+            Debug.Break();
+         }
+      }
    }
 }

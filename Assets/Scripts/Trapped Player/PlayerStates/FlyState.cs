@@ -1,21 +1,22 @@
 ﻿using UnityEngine;
 
-public class GroundState : ATrappedPlayerState
+public class FlyState : ATrappedPlayerState
 {
+   private float vertical = 0f;
    private float horizontal = 0f;
    private bool jump = false;
    private bool dash = false;
 
-   public GroundState(TrappedPlayer trappedPlayer) : base(trappedPlayer) { }
+   public FlyState(TrappedPlayer trappedPlayer) : base(trappedPlayer) { }
 
    public override ATrappedPlayerState GetNextState()
    {
-      if(trappedPlayer.CollidedDanger)
+      if (trappedPlayer.MustDie)
       {
          return new DeathState(trappedPlayer);
       }
 
-      if(dash)
+      if (dash)
       {
          return new DashState(trappedPlayer, horizontal);
       }
@@ -32,10 +33,10 @@ public class GroundState : ATrappedPlayerState
 
       if (trappedPlayer.GroundCheck())
       {
-         return this;
+         return new GroundState(trappedPlayer);
       }
 
-      return new FlyState(trappedPlayer);
+      return this;
    }
 
    public override void HandleInput()
@@ -44,22 +45,22 @@ public class GroundState : ATrappedPlayerState
       if (Input.GetButtonDown(InputNames.DASH) && trappedPlayer.CanDash) { dash = true; }
 
       horizontal = Input.GetAxisRaw(InputNames.TRAPPED_HORIZONTAL);
+      vertical = Mathf.Min(0f, Input.GetAxisRaw(InputNames.TRAPPED_VERTICAL));
    }
 
    public override void FixedUpdate()
    {
       trappedPlayer.MoveHorizontal(horizontal);
+      trappedPlayer.Rigidbody.velocity += new Vector3(0f, trappedPlayer.goDownVelocity * vertical * Time.fixedDeltaTime, 0f);
+      trappedPlayer.Rigidbody.velocity = new Vector3(
+         trappedPlayer.Rigidbody.velocity.x,
+         Mathf.Max(-trappedPlayer.goDownMaxVelocity, trappedPlayer.Rigidbody.velocity.y),
+         trappedPlayer.Rigidbody.velocity.y);
+
       if (jump)
       {
          trappedPlayer.Jump();
          jump = false;
       }
-   }
-
-   public override void OnEnterState()
-   {
-      trappedPlayer.ResetJump();
-
-      if (Input.GetButton(InputNames.JUMP)) { jump = true; }
    }
 }
