@@ -11,7 +11,6 @@ public class DoubleMoveComponent : ATrapComponent
    [SerializeField] private float waitDelay = 1.2f;
 
    private bool isOpening = false;
-   private bool isWaiting = false;
    private bool isClosing = false;
 
    private void Awake()
@@ -31,10 +30,8 @@ public class DoubleMoveComponent : ATrapComponent
       isOpening = true;
       yield return new WaitForSeconds(openDelay);
       isOpening = false;
-      isWaiting = true;
       transform.position = initPosition + delta;
       yield return new WaitForSeconds(waitDelay);
-      isWaiting = false;
       isClosing = true;
       yield return new WaitForSeconds(openDelay);
       isClosing = false;
@@ -47,10 +44,6 @@ public class DoubleMoveComponent : ATrapComponent
       if(isOpening)
       {
          transform.Translate(speed * normalizedDelta * Time.fixedDeltaTime);
-      }
-      else if(isWaiting)
-      {
-
       }
       else if(isClosing)
       {

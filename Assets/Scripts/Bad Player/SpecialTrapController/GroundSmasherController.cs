@@ -2,29 +2,26 @@
 
 public class GroundSmasherController : ASpecialTrapController
 {
-   private int currentSmasher = 3;
-   private int nextSmasher = 3;
+   private int currentSmasher = 2;
+   private int nextSmasher = 2;
    private GameObject[] smashers = new GameObject[5];
    private SimpleMoveComponent[] smashersMove = new SimpleMoveComponent[5];
+   private Danger[] smashersDanger = new Danger[5];
 
    public override void OnEnter()
    {
       for(int i = 0; i < smashers.Length; i++)
       {
          smashers[i] = GameObjectUtils.Find("Ground Smasher " + (i+1));
-         smashers[i].GetComponent<Renderer>().material.color = ConstantsManager.Yellow;
          smashersMove[i] = smashers[i].GetComponent<SimpleMoveComponent>();
+         smashersDanger[i] = smashers[i].transform.GetChild(0).gameObject.GetComponent<Danger>();
       }
-      smashersMove[3].Execute();
+      Smash(2);
    }
 
    public override void OnExit()
    {
-      for (int i = 0; i < smashers.Length; i++)
-      {
-         smashers[i].GetComponent<Renderer>().material.color = ConstantsManager.Border;
-      }
-      smashersMove[currentSmasher].Execute();
+      Unsmash(currentSmasher);
    }
 
    public override void HandleInput()
@@ -37,8 +34,8 @@ public class GroundSmasherController : ASpecialTrapController
    {
       if (nextSmasher != currentSmasher)
       {
-         smashersMove[currentSmasher].Execute();
-         smashersMove[nextSmasher].Execute();
+         Unsmash(currentSmasher);
+         Smash(nextSmasher);
          currentSmasher = nextSmasher;
       }
    }
@@ -60,5 +57,17 @@ public class GroundSmasherController : ASpecialTrapController
       {
          nextSmasher--;
       }
+   }
+
+   public void Smash(int smasherIndex)
+   {
+      smashersDanger[smasherIndex].MakeDangerousYellow();
+      smashersMove[smasherIndex].Execute();
+   }
+
+   public void Unsmash(int smasherIndex)
+   {
+      smashersDanger[smasherIndex].MakeHarmlessBorder();
+      smashersMove[smasherIndex].Execute();
    }
 }

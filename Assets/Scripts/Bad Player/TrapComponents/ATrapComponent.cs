@@ -2,6 +2,11 @@
 
 public abstract class ATrapComponent : MonoBehaviour
 {
+   private void Start()
+   {
+      enabled = false;
+   }
+
    public void Execute()
    {
       if (!enabled)

@@ -28,7 +28,7 @@ public class BadPlayerController : MonoBehaviour
       TrapSpec2Command.Initialize();
 
       //TrapCommand with input
-      TrapSpecial = new InputTrapCommand(TrapSpec2Command, InputNames.TRAP_SPECIAL);
+      TrapSpecial = new InputTrapCommand(TrapSpec1Command, InputNames.TRAP_SPECIAL);
       Trap1 = new InputTrapCommand(Trap1Command, InputNames.TRAP_1);
       Trap2 = new InputTrapCommand(NothingTrapCommand, InputNames.TRAP_2);
       Trap3 = new InputTrapCommand(NothingTrapCommand, InputNames.TRAP_3);

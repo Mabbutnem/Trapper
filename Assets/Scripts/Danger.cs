@@ -20,7 +20,11 @@ public class Danger : MonoBehaviour
       if (canBeHarmless)
       {
          gameObject.tag = "Untagged";
-         gameObject.GetComponent<Renderer>().material.color = harmlessColor;
+         Renderer renderer = gameObject.GetComponent<Renderer>();
+         if (renderer)
+         {
+            renderer.material.color = harmlessColor;
+         }
          if (destroy)
          {
             Destroy(gameObject, harmlessTime);
@@ -39,6 +43,26 @@ public class Danger : MonoBehaviour
       if(renderer)
       {
          renderer.material.color = ConstantsManager.Red;
+      }
+   }
+
+   public void MakeDangerousYellow()
+   {
+      gameObject.tag = DANGER_TAG;
+      Renderer renderer = gameObject.GetComponent<Renderer>();
+      if (renderer)
+      {
+         renderer.material.color = ConstantsManager.Yellow;
+      }
+   }
+
+   public void MakeHarmlessBorder()
+   {
+      gameObject.tag = "Untagged";
+      Renderer renderer = gameObject.GetComponent<Renderer>();
+      if (renderer)
+      {
+         renderer.material.color = ConstantsManager.Border;
       }
    }
 }
