@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SpawnSwipeRectangleComponent : ATrapComponent
+public class SpawnSwipeRectangle : MonoBehaviour
 {
    [SerializeField] private float spawnDelay = 0f;
    [SerializeField] private Vector3 initPosition1 = Vector3.zero;
    [SerializeField] private Vector3 initPosition2 = Vector3.zero;
    [SerializeField] private Vector3 initSpeed = Vector3.zero;
 
-   protected override void OnExecute()
+   public void Spawn()
    {
       StartCoroutine(Routine());
    }
@@ -28,6 +28,5 @@ public class SpawnSwipeRectangleComponent : ATrapComponent
       {
          rigidbody.velocity = signedInitSpeed;
       }
-      Stop();
    }
 }

@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SpawnComponent : ATrapComponent
+public class SpawnComponent : MonoBehaviour
 {
    [SerializeField] private GameObject toSpawn;
    [SerializeField] private float spawnDelay = 0f;
    [SerializeField] private Vector3 initPosition = Vector3.zero;
    [SerializeField] private Vector3 initSpeed = Vector3.zero;
 
-   protected override void OnExecute()
+   protected void Spawn()
    {
       StartCoroutine(Routine());
    }
@@ -23,6 +23,5 @@ public class SpawnComponent : ATrapComponent
       {
          rigidbody.velocity = initSpeed;
       }
-      Stop();
    }
 }

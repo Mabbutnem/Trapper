@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ZeroGravityCubeController : ASpecialTrapController
+public class ZeroGravityCubeController : ATrapController
 {
    private static readonly float speed = 400f;
    private static readonly float moveSmoothing = 0.05f;
@@ -9,6 +9,8 @@ public class ZeroGravityCubeController : ASpecialTrapController
    private Rigidbody rigidbody;
    private Vector2 move = Vector2.zero;
    private Vector3 velocity = Vector3.zero;
+
+   public ZeroGravityCubeController(string name) : base(name) { }
 
    private void LoadZeroGravityCube()
    {

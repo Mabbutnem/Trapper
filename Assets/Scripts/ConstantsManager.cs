@@ -11,6 +11,10 @@ public class ConstantsManager : MonoBehaviour
 
    public static GameObject DangerBottomRectangle { get; private set; }
    public static GameObject ZeroGravityCube { get; private set; }
+   public static GameObject Shooter { get; private set; }
+   public static GameObject Bullet { get; private set; }
+   public static GameObject Smuggler { get; private set; }
+   public static GameObject Magnet { get; private set; }
 
    private void Awake()
    {
@@ -21,5 +25,9 @@ public class ConstantsManager : MonoBehaviour
 
       DangerBottomRectangle = Resources.Load<GameObject>("Prefabs/Danger Bottom Rectangle");
       ZeroGravityCube = Resources.Load<GameObject>("Prefabs/Zero Gravity Cube");
+      Shooter = Resources.Load<GameObject>("Prefabs/Shooter");
+      Bullet = Resources.Load<GameObject>("Prefabs/Bullet");
+      Smuggler = Resources.Load<GameObject>("Prefabs/Smuggler");
+      Magnet = Resources.Load<GameObject>("Prefabs/Magnet");
    }
 }

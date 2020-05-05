@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 
-public class GroundSmasherController : ASpecialTrapController
+public class SmasherController : ATrapController
 {
    private int currentSmasher = 2;
    private int nextSmasher = 2;
    private GameObject[] smashers = new GameObject[5];
-   private SimpleMoveComponent[] smashersMove = new SimpleMoveComponent[5];
+   private OpenAndClose[] smashersMove = new OpenAndClose[5];
    private Danger[] smashersDanger = new Danger[5];
+
+   public SmasherController(string name) : base(name) { }
 
    public override void OnEnter()
    {
       for(int i = 0; i < smashers.Length; i++)
       {
-         smashers[i] = GameObjectUtils.Find("Ground Smasher " + (i+1));
-         smashersMove[i] = smashers[i].GetComponent<SimpleMoveComponent>();
+         smashers[i] = GameObjectUtils.Find("Smasher " + (i+1));
+         smashersMove[i] = smashers[i].GetComponent<OpenAndClose>();
          smashersDanger[i] = smashers[i].transform.GetChild(0).gameObject.GetComponent<Danger>();
       }
       Smash(2);
@@ -44,7 +46,8 @@ public class GroundSmasherController : ASpecialTrapController
    {
       if(currentSmasher < 4 &&
          Mathf.Abs(currentSmasher - nextSmasher) == 0
-         && !smashersMove[currentSmasher].enabled)
+         && !smashersMove[currentSmasher].IsExecuting
+         && !smashersMove[currentSmasher+1].IsExecuting)
       {
          nextSmasher++;
       }
@@ -53,7 +56,8 @@ public class GroundSmasherController : ASpecialTrapController
    {
       if(currentSmasher > 0 &&
          Mathf.Abs(currentSmasher - nextSmasher) == 0
-         && !smashersMove[currentSmasher].enabled)
+         && !smashersMove[currentSmasher].IsExecuting
+         && !smashersMove[currentSmasher-1].IsExecuting)
       {
          nextSmasher--;
       }
@@ -62,12 +66,12 @@ public class GroundSmasherController : ASpecialTrapController
    public void Smash(int smasherIndex)
    {
       smashersDanger[smasherIndex].MakeDangerousYellow();
-      smashersMove[smasherIndex].Execute();
+      smashersMove[smasherIndex].Open();
    }
 
    public void Unsmash(int smasherIndex)
    {
       smashersDanger[smasherIndex].MakeHarmlessBorder();
-      smashersMove[smasherIndex].Execute();
+      smashersMove[smasherIndex].Close();
    }
 }
