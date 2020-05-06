@@ -7,6 +7,13 @@ public class TrapManager : MonoBehaviour
 {
    public static ATrapCommand NothingTrapCommand { get; } = new NothingTrapCommand("Nothing", 5f);
    public static ATrapCommand TaclerCommand { get; } = new TaclerCommand("Tacler", 5f);
+   public static ATrapCommand FallingStonesCommand { get; } = new FallingStonesCommand("Falling Stones", 15f);
+   public static ATrapCommand SpikesCommand { get; } = new SpikesCommand("Spikes", 10f);
+   public static ATrapCommand HoleCommand { get; } = new HoleCommand("Holes", 15f);
+   public static ATrapCommand ExplosionCommand { get; } = new ExplosionCommand("Explosion", 8f);
+   public static ATrapCommand BouncingBallCommand { get; } = new BouncingBallCommand("Bouncing Ball", 15f);
+   public static ATrapCommand StrikerCommand { get; } = new StrikerCommand("Striker", 15f);
+   public static ATrapCommand PusherCommand { get; } = new PusherCommand("Pusher", 10f);
    private static ATrapCommand[] trapCommands;
 
    public static ATrapController NothingTrapController { get; } = new NothingTrapController("Nothing");
@@ -31,7 +38,14 @@ public class TrapManager : MonoBehaviour
       //TRAPS
       trapCommands = new ATrapCommand[]
       {
-         TaclerCommand.Initialize()
+         TaclerCommand.Initialize(),
+         FallingStonesCommand.Initialize(),
+         SpikesCommand.Initialize(),
+         HoleCommand.Initialize(),
+         ExplosionCommand.Initialize(),
+         BouncingBallCommand.Initialize(),
+         StrikerCommand.Initialize(),
+         PusherCommand.Initialize()
       };
 
       trapChoiceButtons = new Dictionary<ATrapCommand, Button>();
@@ -67,7 +81,7 @@ public class TrapManager : MonoBehaviour
 
    public void Start()
    {
-      ChooseController(2);
+      ChooseTrap1(8);
    }
 
    public void ResetTrapsAndController()

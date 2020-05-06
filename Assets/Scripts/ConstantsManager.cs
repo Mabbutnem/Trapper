@@ -10,6 +10,9 @@ public class ConstantsManager : MonoBehaviour
    public static Color Yellow { get; private set; }
 
    public static GameObject DangerBottomRectangle { get; private set; }
+   public static GameObject Stone { get; private set; }
+   public static GameObject BouncingBall { get; private set; }
+   public static GameObject Striker { get; private set; }
    public static GameObject ZeroGravityCube { get; private set; }
    public static GameObject Shooter { get; private set; }
    public static GameObject Bullet { get; private set; }
@@ -24,6 +27,9 @@ public class ConstantsManager : MonoBehaviour
       Yellow = Resources.Load<Material>("Materials/Yellow").color;
 
       DangerBottomRectangle = Resources.Load<GameObject>("Prefabs/Danger Bottom Rectangle");
+      Stone = Resources.Load<GameObject>("Prefabs/Stone");
+      BouncingBall = Resources.Load<GameObject>("Prefabs/Bouncing Ball");
+      Striker = Resources.Load<GameObject>("Prefabs/Striker");
       ZeroGravityCube = Resources.Load<GameObject>("Prefabs/Zero Gravity Cube");
       Shooter = Resources.Load<GameObject>("Prefabs/Shooter");
       Bullet = Resources.Load<GameObject>("Prefabs/Bullet");

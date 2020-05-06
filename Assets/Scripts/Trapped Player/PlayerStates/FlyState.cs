@@ -63,4 +63,9 @@ public class FlyState : ATrappedPlayerState
          jump = false;
       }
    }
+
+   public override void OnEnterState()
+   {
+      Debug.Log("Fly");
+   }
 }

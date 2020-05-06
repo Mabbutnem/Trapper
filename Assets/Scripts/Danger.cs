@@ -46,6 +46,11 @@ public class Danger : MonoBehaviour
       }
    }
 
+   public void MakeDangerousNoColor()
+   {
+      gameObject.tag = DANGER_TAG;
+   }
+
    public void MakeDangerousYellow()
    {
       gameObject.tag = DANGER_TAG;

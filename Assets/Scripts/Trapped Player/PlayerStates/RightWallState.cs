@@ -51,6 +51,8 @@ public class RightWallState : ATrappedPlayerState
 
    public override void OnEnterState()
    {
+      Debug.Log("Right Wall");
+
       trappedPlayer.ResetJump();
    }
 }

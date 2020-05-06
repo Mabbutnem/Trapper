@@ -58,6 +58,8 @@ public class GroundState : ATrappedPlayerState
 
    public override void OnEnterState()
    {
+      Debug.Log("Ground");
+
       trappedPlayer.ResetJump();
 
       if (Input.GetButton(InputNames.JUMP)) { jump = true; }

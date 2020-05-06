@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SpawnComponent : MonoBehaviour
+public class SpawnScript : MonoBehaviour
 {
    [SerializeField] private GameObject toSpawn;
    [SerializeField] private float spawnDelay = 0f;
