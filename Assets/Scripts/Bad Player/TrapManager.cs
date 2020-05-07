@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -79,11 +80,6 @@ public class TrapManager : MonoBehaviour
       badPlayerController = GameObjectUtils.Find("Bad Player").GetComponent<BadPlayerController>();
    }
 
-   public void Start()
-   {
-      ChooseTrap1(8);
-   }
-
    public void ResetTrapsAndController()
    {
       badPlayerController.Trap1.TrapCommand = NothingTrapCommand;
@@ -98,22 +94,22 @@ public class TrapManager : MonoBehaviour
    }
 
    #region Trap
-   public void ChooseTrap1(int nbChoice)
+   public void ChooseTrap1(int nbChoice, Action onClick)
    {
-      ChooseTrap(badPlayerController.Trap1, nbChoice);
+      ChooseTrap(badPlayerController.Trap1, nbChoice, onClick);
    }
 
-   public void ChooseTrap2(int nbChoice)
+   public void ChooseTrap2(int nbChoice, Action onClick)
    {
-      ChooseTrap(badPlayerController.Trap2, nbChoice);
+      ChooseTrap(badPlayerController.Trap2, nbChoice, onClick);
    }
 
-   public void ChooseTrap3(int nbChoice)
+   public void ChooseTrap3(int nbChoice, Action onClick)
    {
-      ChooseTrap(badPlayerController.Trap3, nbChoice);
+      ChooseTrap(badPlayerController.Trap3, nbChoice, onClick);
    }
 
-   private void ChooseTrap(InputTrapCommand inputTrapCommand , int nbChoice)
+   private void ChooseTrap(InputTrapCommand inputTrapCommand , int nbChoice, Action onClick)
    {
       List<ATrapCommand> availableTraps = new List<ATrapCommand>(trapCommands);
       availableTraps.RemoveAll(trapCommand => alreadyChoosenTraps.Contains(trapCommand));
@@ -126,7 +122,7 @@ public class TrapManager : MonoBehaviour
       {
          for(int i = 0; i < nbChoice; i++)
          {
-            ATrapCommand randomTrap = availableTraps[Random.Range(0, availableTraps.Count)];
+            ATrapCommand randomTrap = availableTraps[UnityEngine.Random.Range(0, availableTraps.Count)];
             randomTrap.StartPreview();
             availableTraps.Remove(randomTrap);
             trapCurrentChoices.Add(randomTrap);
@@ -138,6 +134,7 @@ public class TrapManager : MonoBehaviour
                inputTrapCommand.TrapCommand = trapCommand;
                alreadyChoosenTraps.Add(trapCommand);
                ResetTrapChoices();
+               onClick.Invoke();
             });
          }
       }
@@ -156,7 +153,7 @@ public class TrapManager : MonoBehaviour
    #endregion
 
    #region Controller
-   public void ChooseController(int nbChoice)
+   public void ChooseController(int nbChoice, Action onClick)
    {
       if (trapControllers.Length < nbChoice)
       {
@@ -168,7 +165,7 @@ public class TrapManager : MonoBehaviour
          List<ATrapController> availableController = new List<ATrapController>(trapControllers);
          for (int i = 0; i < nbChoice; i++)
          {
-            ATrapController randomController = availableController[Random.Range(0, availableController.Count)];
+            ATrapController randomController = availableController[UnityEngine.Random.Range(0, availableController.Count)];
             randomController.OnEnter();
             availableController.Remove(randomController);
             controllerCurrentChoices.Add(randomController);
@@ -179,6 +176,7 @@ public class TrapManager : MonoBehaviour
                ATrapController trapController = controllerChoiceButtons.FirstOrDefault(x => x.Value == associatedButton).Key;
                badPlayerController.TrapController = trapController;
                ResetControllerChoices(trapController);
+               onClick.Invoke();
             });
          }
       }
@@ -192,7 +190,6 @@ public class TrapManager : MonoBehaviour
          controllerChoiceButtons[trapController].onClick.RemoveAllListeners();
          controllerChoiceButtons[trapController].gameObject.SetActive(false);
       }
-      controllerChoiceButtons.Clear();
    }
    #endregion
 }

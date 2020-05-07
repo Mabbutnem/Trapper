@@ -8,6 +8,11 @@ public class DeathState : ATrappedPlayerState
 
    public override ATrappedPlayerState GetNextState()
    {
+      if (trappedPlayer.MustWait)
+      {
+         return new WaitState(trappedPlayer);
+      }
+
       if (duration >= trappedPlayer.deathDur)
       {
          return new FlyState(trappedPlayer);
@@ -28,12 +33,13 @@ public class DeathState : ATrappedPlayerState
 
    public override void OnEnterState()
    {
+      trappedPlayer.NumberOfLife--;
       trappedPlayer.Rigidbody.constraints = RigidbodyConstraints.None;
    }
 
    public override void OnExitState()
    {
       trappedPlayer.Rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-      trappedPlayer.Respawn();
+      if (trappedPlayer.NumberOfLife > 0) { trappedPlayer.Respawn(); }
    }
 }

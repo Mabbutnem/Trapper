@@ -12,7 +12,12 @@ public class DashState : ATrappedPlayerState
 
    public override ATrappedPlayerState GetNextState()
    {
-      if(duration >= trappedPlayer.dashDur)
+      if (trappedPlayer.MustWait)
+      {
+         return new WaitState(trappedPlayer);
+      }
+
+      if (duration >= trappedPlayer.dashDur)
       {
          return new FlyState(trappedPlayer);
       }

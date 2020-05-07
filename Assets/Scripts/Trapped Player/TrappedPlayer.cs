@@ -34,6 +34,16 @@ public class TrappedPlayer : MonoBehaviour
    public bool CanDie { get; set; } =  true;
    public bool MustDie { get; set; } = false;
    private Transform respawn;
+   private int numberOfLife = 3;
+   public int NumberOfLife
+   {
+      get => numberOfLife;
+      set
+      {
+         numberOfLife = value;
+         CheckWinCondition();
+      }
+   }
 
    [Header("Check")]
    public LayerMask whatIsGround;
@@ -46,10 +56,15 @@ public class TrappedPlayer : MonoBehaviour
    private Transform leftCheck;
    private Transform rightCheck;
 
+   //Wait between rounds
+   public bool MustWait { get; set; } = true;
+
    //Others
    public Rigidbody Rigidbody { get; private set; }
    public Collider Collider { get; private set; }
    public Renderer Renderer { get; private set; }
+
+   private RoundManager roundManager;
 
    private void Awake()
    {
@@ -79,7 +94,7 @@ public class TrappedPlayer : MonoBehaviour
       leftCheck = GameObjectUtils.Find("LeftCheck").GetComponent<Transform>();
       rightCheck = GameObjectUtils.Find("RightCheck").GetComponent<Transform>();
 
-      Respawn();
+      roundManager = GameObjectUtils.Find("Round Manager").GetComponent<RoundManager>();
    }
 
    #region Move
@@ -164,6 +179,15 @@ public class TrappedPlayer : MonoBehaviour
       {
          yield return new WaitForSeconds(blinkFreq);
          Renderer.enabled = !Renderer.enabled;
+      }
+   }
+
+   private void CheckWinCondition()
+   {
+      if(numberOfLife <= 0)
+      {
+         MustWait = true;
+         roundManager.BadPlayerWins();
       }
    }
    #endregion

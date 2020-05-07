@@ -4,7 +4,7 @@ public class SmugglerController : ATrapController
 {
    private static readonly float speed = 400f;
    private static readonly float moveSmoothing = 0.05f;
-   private static readonly float centerSpeed = 5f;
+   private static readonly float centerSpeed = 10f;
    private static readonly float positionLimit = 8.75f;
 
    private GameObject smuggler;

@@ -6,7 +6,7 @@ public class TrappedPlayerController : MonoBehaviour
 
    private void Awake()
    {
-      playerState = new FlyState(GetComponent<TrappedPlayer>());
+      playerState = new WaitState(GetComponent<TrappedPlayer>());
       playerState.OnEnterState();
    }
 

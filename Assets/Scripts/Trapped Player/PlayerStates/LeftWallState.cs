@@ -12,6 +12,11 @@ public class LeftWallState : ATrappedPlayerState
 
    public override ATrappedPlayerState GetNextState()
    {
+      if (trappedPlayer.MustWait)
+      {
+         return new WaitState(trappedPlayer);
+      }
+
       if (trappedPlayer.MustDie)
       {
          return new DeathState(trappedPlayer);
