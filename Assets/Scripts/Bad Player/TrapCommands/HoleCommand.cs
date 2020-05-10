@@ -3,6 +3,7 @@
    private static readonly int nbHoles = 6;
 
    private OpenAndClose[] holes;
+   private SolidDisapear realGround;
 
    public HoleCommand(string name, float coolDown) : base(name, coolDown) { }
 
@@ -13,6 +14,7 @@
       {
          holes[i] = GameObjectUtils.Find("Ground " + (i + 1)).GetComponent<OpenAndClose>();
       }
+      realGround = GameObjectUtils.Find("Real Ground").GetComponent<SolidDisapear>();
 
       return base.Initialize();
    }
@@ -23,6 +25,7 @@
       {
          hole.OpenWaitClose();
       }
+      realGround.DisapearForSeconds();
    }
 
    public override void StartPreview()
@@ -31,6 +34,7 @@
       {
          hole.Open();
       }
+      realGround.Disapear();
    }
 
    public override void StopPreview()
@@ -39,5 +43,6 @@
       {
          hole.Close();
       }
+      realGround.Apear();
    }
 }

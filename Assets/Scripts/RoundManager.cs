@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class RoundManager : MonoBehaviour
 {
    private static readonly float timeToWaitBetweenChoices = 1f;
-   private static readonly string BAD_VICTORY_TEXT = "Bad Player Wins !";
+   private static readonly string BAD_VICTORY_TEXT = "Vilain Player Wins !";
    private static readonly string GOOD_VICTORY_TEXT = "Good Player Wins !";
 
    [SerializeField] private int nbTrapByChoice = 2;
